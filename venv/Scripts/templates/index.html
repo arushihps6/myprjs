@@ -1,0 +1,54 @@
+<html>
+    <title>Employee Management</title>
+</head>
+<body>
+    <h1>Employee Management</h1>
+
+    <!-- Form for searching an employee -->
+    <h2>Search Employee</h2>
+    <form id="searchForm">
+        <label for="searchName">Name:</label>
+        <input type="text" id="searchName" name="ename" required>
+        <button type="submit">Search Employee</button>
+    </form>
+
+    <!-- Container to display search results -->
+    <div id="searchResults"></div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Function to handle form submission for searching an employee
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/search?' + new URLSearchParams(formData).toString())
+    .then(response => response.json())
+    .then(data => {
+        const searchResultsDiv = document.getElementById('searchResults');
+        searchResultsDiv.innerHTML = ''; // Clear previous results
+        if (data.length > 0) {
+            const table = document.createElement('table');
+            const headerRow = table.insertRow();
+            // Create table headers for each column
+            Object.keys(data[0]).forEach(key => {
+                const headerCell = headerRow.insertCell();
+                headerCell.textContent = key.toUpperCase(); // Capitalize column names
+            });
+            data.forEach(employee => {
+                const row = table.insertRow();
+                // Create table cells for each column
+                Object.values(employee).forEach(value => {
+                    const cell = row.insertCell();
+                    cell.textContent = value;
+                });
+            });
+            searchResultsDiv.appendChild(table);
+        } else {
+            searchResultsDiv.textContent = 'No results found';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+    </script>
+</body>
+</html>
