@@ -2,7 +2,7 @@
   "name": "reactapp",
   "version": "0.1.0",
   "scripts": {
-    "start": "..\\..\\scripts\\App.py"
+    "start": "scripts\\App.py"
   },
   "dependencies": {
     "axios": "^1.7.2"
